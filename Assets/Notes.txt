@@ -12,3 +12,36 @@ Start with nothing then grow?
 
 Visible: Population, Money
 Calculatable/Hidden: DeathRate, GrowthRate, IncomePPS
+
+Grow. Implement Tech Tree. Change Number Values.
+
+Get Money, Sac Pop
+
+DONE /// Increase Taxes, Sac Pop
+
+Increase Science, Sac Money
+
+DONE /// Increase Population, Sac Other Benefits
+
+Immediate Effect,
+
+Decay?
+
+
+Things I need to do.
+
+DON@T THINK I NEED TO  - Increase in Science one
+DONE - Tech Tree
+---- I can go to bed here ----
+  - Increase in science when you use the token for science token
+  - Floating Numbers
+  - Implement Sciences
+  - Models?
+  - Tutorial
+  - Menus and Stuff
+  - Look, style
+    - Increase Texture Detail
+  - Colored Tech Tree Parent and Name regarding science nuetral and others.
+  - Shaders
+  - Sort out behind bug
+  - Destroy effects properly (tbh i think this is being done)
