@@ -12,3 +12,12 @@ Start with nothing then grow?
 
 Visible: Population, Money
 Calculatable/Hidden: DeathRate, GrowthRate, IncomePPS
+
+Grow. Implement Tech Tree. Change Number Values.
+
+Get Money, Sac Pop
+Increase Taxes, Sac Pop
+Increase Science, Sac Money
+Increase Population, Sac Other Benefits
+
+Immediate Effect,

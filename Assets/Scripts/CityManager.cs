@@ -5,10 +5,11 @@ using System.Collections.Generic;
 public class CityManager : MonoBehaviour {
 
 	public GameObject CityBlock;
-	public int width, height;
 
 	// Use this for initialization
 	void Start () {
+		int width = GameManager.width;
+		int height = GameManager.height;
 		GameManager.Blocks = new CityGenerator[width * height * 2 * 2];
 		int i = 0;
 		for (float x = -width; x < width; x++) {
@@ -21,7 +22,7 @@ public class CityManager : MonoBehaviour {
 				//City Design 1st Num is Spread
 				//CG.TowerHealth = 45f*Mathf.Abs(((1f-(Mathf.Abs(x)/width))+(1f-(Mathf.Abs(y)/height)))/4f);
 				CG.TowerHealth = 2f*Mathf.Abs(((1f-((Mathf.Abs(x)+1)/width))+(1f-((Mathf.Abs(y)+1)/height)))/4f);
-				CG.GenerateCity();
+				CG.GenerateCity((int)x+(int)width, (int)y+(int)height);
 				GameManager.Blocks[i] = CG;
 				i++;
 			}

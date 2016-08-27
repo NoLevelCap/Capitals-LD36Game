@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
 	public static GameObject TokenSelection;
 	public static CityGenerator BlockSelection;
 
+	public static int width = 10, height = 10;
+
 	public static CityGenerator[] Blocks;
 
 	public Dictionary<string, Token> tokens;
@@ -22,7 +24,9 @@ public class GameManager : MonoBehaviour {
 	public int Population, Money, Day;
 	public Text PopulationTXT, DateTXT, MoneyTXT;
 
-	public float MPP = 0.05f;
+	public float MPP = 0.00f;
+
+	public static bool TokenPlayed;
 
 	private float TimeSinceLC;
 
@@ -38,17 +42,27 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(TokenPlayed || Day == 0){
+			DayUpdate ();
+			TokenPlayed = false;
+		}
 		PopulationTXT.text = Population + " ";
 		MoneyTXT.text = "<color=green>£" + Money + "</color>" + " ";
 		DateTXT.text = "Day: " + Day + " ";
 	}
 
 	//Day Update
-	void FixedUpdate(){
+	void DayUpdate(){
 		if(Blocks != null){
+			foreach (CityGenerator block in Blocks) {
+				if(block.ActiveToken != null){
+					block.ActiveEffect.TriggerEffect (block);
+				}
+			}
+
 			Population = 0;
 			foreach (CityGenerator block in Blocks) {
-				foreach (float height in block.height) {
+				foreach (float height in block.CBD.height) {
 					Population += Mathf.RoundToInt(height);
 				}
 			}
@@ -96,16 +110,25 @@ public class GameManager : MonoBehaviour {
 	}
 		
 	void initTokens(){
-		Effect nEffect = new Effect (0,0,0,0,0);
+		AEffect nEffect = new PopulationIncreaseEffect ();
 		tokens.Add ("The Wheel", new Token(Type.Science, "The Wheel", Morality.Neutral, nEffect, 0, 0, "no clue"));
 		Token par; if (tokens.TryGetValue ("The Wheel", out par)) {par.Unlocked = true;}
 
-		nEffect = new Effect (0,0,0,0,0);
+		Debug.Log (new PopulationIncreaseEffect());
+
+		/*nEffect = new Effect (SpecialMode.PopIncrease, 0, 100f);
 		tokens.Add ("Writing", new Token(Type.Science, "Writing", Morality.Neutral, nEffect, 0, 1, "no clue"));
 		if (tokens.TryGetValue ("Writing", out par)) {par.Unlocked = true;}
 
-		nEffect = new Effect (0,0,0,0,0);
+		nEffect = new Effect (SpecialMode.PopIncrease, 0, 100f);
 		tokens.Add ("Basic Tools", new Token(Type.Science, "Basic Tools", Morality.Neutral, nEffect, 0,  0, "no clue"));
-		if (tokens.TryGetValue ("Basic Tools", out par)) {par.Unlocked = true;}
+		if (tokens.TryGetValue ("Basic Tools", out par)) {par.Unlocked = true;}*/
+	}
+
+	public static CityGenerator GetBlock(int mx, int my){
+		if(Blocks != null){
+			return Blocks [(mx * width * 2) + my ];
+		}
+		return null;
 	}
 }

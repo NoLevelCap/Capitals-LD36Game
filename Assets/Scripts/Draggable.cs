@@ -41,8 +41,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			} else {
 				Show ();
 			}
-			/*if(Vector3.Magnitude(Camera.main.transform.position-worldPos) < 0){
-			}*/
 		}
 	}
 
@@ -70,28 +68,32 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public void OnEndDrag (PointerEventData eventData)
 	{
 		//Locked Check
-
-		if(GameManager.BlockSelection != null){
-			Debug.Log (GameManager.BlockSelection.TowerHealth);
-			worldPos = GameManager.BlockSelection.transform.position + new Vector3(0, (GameManager.BlockSelection.TowerHealth*0.1f) + 0.5f );
-			Locked = true;
-			if(GameManager.BlockSelection.ActiveToken != null){
-				Destroy (GameManager.BlockSelection.ActiveToken.gameObject);
-			}
-			GameManager.BlockSelection.ActiveToken = this;
-		}
-
-		Dragged = true;
 		if (!Locked) {
-			rect.position = startPos;
-			rect.localScale = Vector3.one;
-			cg.alpha = 1f;
-			transform.parent = parent;
-		} else {
-			rect.localScale = new Vector3 (0.25f, 0.25f, 1f);
-			cg.alpha = 0.75f;
-		}
+			if (GameManager.BlockSelection != null) {
+				worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 0.5f);
+				Locked = true;
+				if (GameManager.BlockSelection.ActiveToken != null) {
+					GameManager.BlockSelection.ActiveEffect.OnDestoy (GameManager.BlockSelection);
+					Destroy (GameManager.BlockSelection.ActiveToken.gameObject);
+				}
+				GameManager.BlockSelection.ActiveToken = this;
+				GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
+				GameManager.TokenPlayed = true;
+				Dragged = true;
+			}
 
-		GameManager.TokenSelection = null;
+			
+			if (!Locked) {
+				rect.position = startPos;
+				rect.localScale = Vector3.one;
+				cg.alpha = 1f;
+				transform.parent = parent;
+			} else {
+				rect.localScale = new Vector3 (0.25f, 0.25f, 1f);
+				cg.alpha = 0.75f;
+			}
+
+			GameManager.TokenSelection = null;
+		}
 	}
 }
