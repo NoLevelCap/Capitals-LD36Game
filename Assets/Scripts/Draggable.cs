@@ -12,6 +12,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public bool Locked, Dragged;
 	public Vector3 worldPos;
 
+	public Token token;
+
 	public void Awake()
 	{
 		rect = GetComponent<RectTransform>();
