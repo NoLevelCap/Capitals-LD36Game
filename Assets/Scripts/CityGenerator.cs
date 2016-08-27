@@ -32,7 +32,7 @@ public class CityGenerator : MonoBehaviour {
 
 				Tower.transform.SetParent (this.transform);
 				height[a] = TowerHealth + (Random.value) * 5f;
-				if(TowerHealth <= 0){
+				if(TowerHealth <= 0.5f){
 					height[a] = 0;
 				}
 				Tower.transform.localScale = new Vector3 (0.38f, height[a], 0.38f);
@@ -86,5 +86,18 @@ public class CityGenerator : MonoBehaviour {
 		if(GameManager.BlockSelection == this){
 			GameManager.BlockSelection = null;
 		}
+	}
+
+	void OnBecameVisible(){
+		if(ActiveToken != null){
+			ActiveToken.Show ();
+		}
+	}
+
+	void OnBecameInvisible(){
+		if(ActiveToken != null){
+			ActiveToken.Hide ();
+		}
+		Destroy (gameObject);
 	}
 }
