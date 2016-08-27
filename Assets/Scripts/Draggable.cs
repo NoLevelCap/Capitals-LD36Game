@@ -8,19 +8,22 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public RectTransform rect;
 	private Vector2 startPos;
 	private CanvasGroup cg;
-	private Transform parent, superparent;
+	public Transform parent, board;
 	public bool Locked, Dragged;
 	public Vector3 worldPos;
 
 	public Token token;
 	public Image Icon;
 
+	public int ExpDate;
+
 	public void Awake()
 	{
 		rect = GetComponent<RectTransform>();
 		cg = GetComponent<CanvasGroup> ();
 		Icon = transform.GetChild (0).GetChild(0).GetComponent<Image> ();
-
+		board = GameObject.Find ("BoardTokens").transform;
+		parent = GameObject.Find ("TokenManager").transform;
 	}
 
 	public void OnDrag(PointerEventData eventData)
@@ -55,12 +58,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public void OnBeginDrag (PointerEventData eventData)
 	{
 		if(!Locked){
-			parent = rect.parent;
-			superparent = parent.parent;
+			
 			startPos = rect.position;
 			rect.localScale = new Vector3 (0.35f, 0.35f, 1f);
 			cg.alpha = 0.25f;
-			transform.parent = superparent;
+			transform.parent = board;
 			GameManager.TokenSelection = gameObject;
 		}
 	}
@@ -69,13 +71,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	{
 		//Locked Check
 		if (!Locked) {
-			if (GameManager.BlockSelection != null) {
+			if (GameManager.BlockSelection != null && GameManager.BlockSelection.ActiveToken == null) {
 				worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 0.5f);
 				Locked = true;
-				if (GameManager.BlockSelection.ActiveToken != null) {
-					GameManager.BlockSelection.ActiveEffect.OnDestoy (GameManager.BlockSelection);
-					Destroy (GameManager.BlockSelection.ActiveToken.gameObject);
-				}
+				ExpDate = GameManager.Day+token.Lifespan;
 				GameManager.BlockSelection.ActiveToken = this;
 				GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
 				GameManager.TokenPlayed = true;
@@ -94,6 +93,13 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			}
 
 			GameManager.TokenSelection = null;
+		}
+	}
+
+	public void CheckForDestroy(){
+		if(GameManager.Day > ExpDate){
+			Debug.Log (ExpDate);
+			Destroy (gameObject);
 		}
 	}
 }

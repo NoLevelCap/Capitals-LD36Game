@@ -10,6 +10,22 @@ public class CityBlockData : ScriptableObject
 	public float MaxHeight = 0f;
 	public BoxCollider bc;
 
+	public float TaxPP = 0.01f;
+	public float Pop, Taxes;
+
+	public float CalcPop(){
+		Pop = 0;
+		for (int i = 0; i < 4; i++) {
+			Pop += height [i];
+		}
+		return Pop;
+	}
+
+	public float CalcTaxes(){
+		Taxes = TaxPP * Pop;
+		return Taxes;
+	}
+
 	public void IncreasePopulation(float fac){
 		for (int i = 0; i < 4; i++) {
 			height [i] += height[i] * fac;

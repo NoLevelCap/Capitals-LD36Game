@@ -16,8 +16,16 @@ Calculatable/Hidden: DeathRate, GrowthRate, IncomePPS
 Grow. Implement Tech Tree. Change Number Values.
 
 Get Money, Sac Pop
+
 Increase Taxes, Sac Pop
+
 Increase Science, Sac Money
-Increase Population, Sac Other Benefits
+
+DONE /// Increase Population, Sac Other Benefits
 
 Immediate Effect,
+
+Decay?
+
+
+Things I need to do.

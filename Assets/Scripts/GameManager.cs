@@ -17,11 +17,11 @@ public class GameManager : MonoBehaviour {
 
 	public Dictionary<string, Token> tokens;
 
-	public GameObject TokenManager;
+	public GameObject TokenManager, TokenBoard;
 	public Queue<Token> ListOfComingTokens;
 	private List<Token> UnlockedTokens;
 
-	public int Population, Money, Day;
+	public static int Population, Money, Day;
 	public Text PopulationTXT, DateTXT, MoneyTXT;
 
 	public float MPP = 0.00f;
@@ -54,20 +54,27 @@ public class GameManager : MonoBehaviour {
 	//Day Update
 	void DayUpdate(){
 		if(Blocks != null){
+			foreach (Transform obj in TokenBoard.transform) {
+				obj.GetComponent<Draggable> ().CheckForDestroy ();
+			}
+
 			foreach (CityGenerator block in Blocks) {
 				if(block.ActiveToken != null){
 					block.ActiveEffect.TriggerEffect (block);
 				}
 			}
 
-			Population = 0;
+			float Pop = 0;
+			float Taxes = 0;
 			foreach (CityGenerator block in Blocks) {
-				foreach (float height in block.CBD.height) {
-					Population += Mathf.RoundToInt(height);
-				}
+				CityBlockData CBD = block.CBD;
+				Pop += CBD.CalcPop();
+				Taxes += CBD.CalcTaxes();
 			}
-			Money += Mathf.RoundToInt(Population * MPP);
+			Population = Mathf.RoundToInt (Pop); Money += Mathf.RoundToInt (Taxes);
 			Day++;
+
+			FillHand (1);
 		}
 	}
 
@@ -111,15 +118,15 @@ public class GameManager : MonoBehaviour {
 		
 	void initTokens(){
 		AEffect nEffect = new PopulationIncreaseEffect ();
-		tokens.Add ("The Wheel", new Token(Type.Science, "The Wheel", Morality.Neutral, nEffect, 0, 0, "no clue"));
+		tokens.Add ("The Wheel", new Token(Type.Science, "The Wheel", Morality.Neutral, nEffect, 3, 0, 0, "no clue"));
 		Token par; if (tokens.TryGetValue ("The Wheel", out par)) {par.Unlocked = true;}
 
 		Debug.Log (new PopulationIncreaseEffect());
 
-		/*nEffect = new Effect (SpecialMode.PopIncrease, 0, 100f);
-		tokens.Add ("Writing", new Token(Type.Science, "Writing", Morality.Neutral, nEffect, 0, 1, "no clue"));
+		nEffect = new LocalTaxesIncreaseEffect ();
+		tokens.Add ("Writing", new Token(Type.Buisness, "Writing", Morality.Neutral, nEffect, 3, 0, 1, "no clue"));
 		if (tokens.TryGetValue ("Writing", out par)) {par.Unlocked = true;}
-
+		/*
 		nEffect = new Effect (SpecialMode.PopIncrease, 0, 100f);
 		tokens.Add ("Basic Tools", new Token(Type.Science, "Basic Tools", Morality.Neutral, nEffect, 0,  0, "no clue"));
 		if (tokens.TryGetValue ("Basic Tools", out par)) {par.Unlocked = true;}*/
