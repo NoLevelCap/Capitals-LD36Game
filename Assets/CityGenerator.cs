@@ -8,11 +8,14 @@ public class CityGenerator : MonoBehaviour {
 	[SerializeField]
 	private GameObject CopyTower;
 
-	public List<MeshRenderer> ChildrenTowers;
+	public MeshRenderer[] ChildrenTowers;
+	public float[] height;
 
 	public float TowerHealth = 50;
 
-	public bool Over;
+	public bool Red;
+
+	public Draggable ActiveToken;
 
 	// Use this for initialization
 	void Start () {
@@ -20,16 +23,22 @@ public class CityGenerator : MonoBehaviour {
 	}
 
 	public void GenerateCity(){
-		ChildrenTowers = new List<MeshRenderer> ();
+		ChildrenTowers = new MeshRenderer[4];
+		height = new float[4];
+		int a = 0;
 		for (int x = -1; x < 2; x+=2) {
 			for (int y = -1; y < 2; y+=2) {
 				GameObject Tower = Instantiate<GameObject> (CopyTower);
 
 				Tower.transform.SetParent (this.transform);
-				float Height = TowerHealth + (Random.value) * 5f;
-				Tower.transform.localScale = new Vector3 (0.38f, Height, 0.38f);
-				Tower.transform.localPosition = new Vector3 (x*0.25f, Height/2f, y*0.25f);
-				ChildrenTowers.Add (Tower.GetComponent<MeshRenderer>());
+				height[a] = TowerHealth + (Random.value) * 5f;
+				if(TowerHealth <= 0){
+					height[a] = 0;
+				}
+				Tower.transform.localScale = new Vector3 (0.38f, height[a], 0.38f);
+				Tower.transform.localPosition = new Vector3 (x*0.25f, height[a]/2f, y*0.25f);
+				ChildrenTowers[a] = Tower.GetComponent<MeshRenderer>();
+				a++;
 			}
 		}
 
@@ -40,20 +49,42 @@ public class CityGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Over) {
-			foreach (MeshRenderer tower in ChildrenTowers) {
-				tower.material.color = Color.red;
-			}
-		} else {
-			foreach (MeshRenderer tower in ChildrenTowers) {
-				tower.material.color = Color.white;
-			}
+		if (GameManager.BlockSelection != this && Red) {
+			TurnWhite ();
 		}
+			
 
-		Over = false;
+		if(ActiveToken != null){
+			ActiveToken.worldPos = transform.position + new Vector3(0, (TowerHealth*0.1f) + 0.5f );
+		}
+	}
+
+	void TurnRed(){
+		foreach (MeshRenderer tower in ChildrenTowers) {
+			tower.material.color = Color.red;
+		}
+		Red = true;
+	}
+
+	void TurnWhite(){
+		foreach (MeshRenderer tower in ChildrenTowers) {
+			tower.material.color = Color.white;
+		}
+		Red = false;
 	}
 
 	void OnMouseOver(){
-		Over = true;
+	}
+
+	void OnMouseEnter(){
+		TurnRed ();
+		GameManager.BlockSelection = this;
+	}
+
+	void OnMouseExit(){
+		TurnWhite ();
+		if(GameManager.BlockSelection == this){
+			GameManager.BlockSelection = null;
+		}
 	}
 }

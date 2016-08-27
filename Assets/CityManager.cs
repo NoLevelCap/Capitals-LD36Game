@@ -15,7 +15,8 @@ public class CityManager : MonoBehaviour {
 				CityObject.transform.localPosition = new Vector3 (2f*x, 0f, 2f*y);
 				CityGenerator CG = CityObject.GetComponent<CityGenerator> ();
 				//City Design 1st Num is Spread
-				CG.TowerHealth = 45f*Mathf.Abs(((1f-(Mathf.Abs(x)/width))+(1f-(Mathf.Abs(y)/height)))/4f);
+				//CG.TowerHealth = 45f*Mathf.Abs(((1f-(Mathf.Abs(x)/width))+(1f-(Mathf.Abs(y)/height)))/4f);
+				CG.TowerHealth = 10f*Mathf.Abs(((1f-((Mathf.Abs(x)+1)/width))+(1f-((Mathf.Abs(y)+1)/height)))/4f);
 				CG.GenerateCity();
 			}
 		}
