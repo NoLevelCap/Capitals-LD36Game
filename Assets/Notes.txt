@@ -1,0 +1,14 @@
+1) Changing town?
+2) Cars?
+3) Building Models?#
+
+Game:
+Technology has gone! Your the mayor of a town and you have to upgrade this tech and advance your society.
+
+You get a token, a tech token and this distributes the tech. However a tech token will have certain properties.
+
+Start with nothing then grow?
+
+
+Visible: Population, Money
+Calculatable/Hidden: DeathRate, GrowthRate, IncomePPS
