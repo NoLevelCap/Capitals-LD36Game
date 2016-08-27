@@ -17,7 +17,7 @@ Grow. Implement Tech Tree. Change Number Values.
 
 Get Money, Sac Pop
 
-Increase Taxes, Sac Pop
+DONE /// Increase Taxes, Sac Pop
 
 Increase Science, Sac Money
 
@@ -29,3 +29,16 @@ Decay?
 
 
 Things I need to do.
+
+  - Increase in Science one
+DONE - Tech Tree
+---- I can go to bed here ----
+  - Floating Numbers
+  - Implement Sciences
+  - Models?
+  - Tutorial
+  - Menus and Stuff
+  - Look, style
+  - Colored Tech Tree Parent and Name regarding science nuetral and others.
+  - Shaders
+  - Sort out behind bug

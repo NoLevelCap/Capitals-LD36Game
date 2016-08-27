@@ -81,6 +81,7 @@ public class Token {
 	}
 
 	public void setParent(Token parent){
+		Debug.Log ("Parent Set: " + parent.Name + " to " + Name);
 		this.parent = parent;
 		this.parent.children.Add (this);
 	}

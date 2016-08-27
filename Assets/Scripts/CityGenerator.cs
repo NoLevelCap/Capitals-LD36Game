@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class CityBlockData : ScriptableObject
+public class CityBlockData
 {
 	public float[] height;
 	public MeshRenderer[] ChildrenTowers;

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject[] TokenObjects;
 	public Sprite[] TokenIcons;
 
+	public GameObject TechData, TechTree;
+
 	public static GameObject TokenSelection;
 	public static CityGenerator BlockSelection;
 
@@ -54,6 +56,8 @@ public class GameManager : MonoBehaviour {
 	//Day Update
 	void DayUpdate(){
 		if(Blocks != null){
+			ShowAvailableTech ();
+
 			foreach (Transform obj in TokenBoard.transform) {
 				obj.GetComponent<Draggable> ().CheckForDestroy ();
 			}
@@ -75,6 +79,23 @@ public class GameManager : MonoBehaviour {
 			Day++;
 
 			FillHand (1);
+		}
+	}
+
+	void ShowAvailableTech(){
+		foreach (Transform item in TechTree.transform) {
+			Destroy (item.gameObject);
+		}
+		foreach (Token tech in UnlockedTokens) {
+			foreach (Token child in tech.children) {
+				GameObject gj = Instantiate<GameObject> (TechData);
+				gj.transform.parent = TechTree.transform;
+				gj.transform.GetChild (0).GetComponent<Text> ().text = child.Name;
+				gj.transform.GetChild (1).GetChild (0).GetComponent<Image> ().sprite = TokenIcons [child.TokenID];
+				gj.transform.GetChild (3).GetComponent<Text> ().text = child.Desc;
+				gj.transform.GetChild (4).GetComponent<Text> ().text = tech.Name;
+				gj.transform.GetChild (5).GetChild (0).GetComponent<Image> ().fillAmount = (float) child.Progress / (float) child.UpPoints;
+			}
 		}
 	}
 
@@ -121,11 +142,16 @@ public class GameManager : MonoBehaviour {
 		tokens.Add ("The Wheel", new Token(Type.Science, "The Wheel", Morality.Neutral, nEffect, 3, 0, 0, "no clue"));
 		Token par; if (tokens.TryGetValue ("The Wheel", out par)) {par.Unlocked = true;}
 
-		Debug.Log (new PopulationIncreaseEffect());
-
 		nEffect = new LocalTaxesIncreaseEffect ();
 		tokens.Add ("Writing", new Token(Type.Buisness, "Writing", Morality.Neutral, nEffect, 3, 0, 1, "no clue"));
 		if (tokens.TryGetValue ("Writing", out par)) {par.Unlocked = true;}
+
+		nEffect = new LocalTaxesIncreaseEffect ();
+		Token child = new Token(Type.Science, "Example", Morality.Neutral, nEffect, 3, 15, 1, "no clue");
+		tokens.Add ("Example", child);
+		if (tokens.TryGetValue ("Writing", out par)) {child.setParent (par);child.Progress = 1;} else {Debug.Log ("ERR");}
+
+
 		/*
 		nEffect = new Effect (SpecialMode.PopIncrease, 0, 100f);
 		tokens.Add ("Basic Tools", new Token(Type.Science, "Basic Tools", Morality.Neutral, nEffect, 0,  0, "no clue"));
