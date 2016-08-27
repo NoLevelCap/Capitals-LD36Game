@@ -87,4 +87,17 @@ public class CityGenerator : MonoBehaviour {
 			GameManager.BlockSelection = null;
 		}
 	}
+
+	void OnBecameVisible(){
+		if(ActiveToken != null){
+			ActiveToken.Show ();
+		}
+	}
+
+	void OnBecameInvisible(){
+		if(ActiveToken != null){
+			ActiveToken.Hide ();
+		}
+		Destroy (gameObject);
+	}
 }

@@ -13,13 +13,13 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public Vector3 worldPos;
 
 	public Token token;
+	public Image Icon;
 
 	public void Awake()
 	{
 		rect = GetComponent<RectTransform>();
 		cg = GetComponent<CanvasGroup> ();
-		parent = rect.parent;
-		superparent = parent.parent;
+		Icon = transform.GetChild (0).GetChild(0).GetComponent<Image> ();
 
 	}
 
@@ -34,15 +34,34 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public void Update(){
 		if(Locked && Dragged){
 			rect.position = Camera.main.WorldToScreenPoint (worldPos);
+			float Mag = Vector3.Magnitude (Camera.main.transform.position - worldPos);
+			rect.localScale = (Vector3.one / Mag) * 7.5f;
+			if (Camera.main.WorldToViewportPoint (worldPos).z < 0) {
+				Hide ();
+			} else {
+				Show ();
+			}
+			/*if(Vector3.Magnitude(Camera.main.transform.position-worldPos) < 0){
+			}*/
 		}
+	}
+
+	public void Hide(){
+		cg.alpha = 0f;
+	}
+
+	public void Show(){
+		cg.alpha = 0.75f;
 	}
 
 	public void OnBeginDrag (PointerEventData eventData)
 	{
 		if(!Locked){
+			parent = rect.parent;
+			superparent = parent.parent;
 			startPos = rect.position;
-			rect.localScale = new Vector3 (0.25f, 0.25f, 1f);
-			cg.alpha = 0.5f;
+			rect.localScale = new Vector3 (0.35f, 0.35f, 1f);
+			cg.alpha = 0.25f;
 			transform.parent = superparent;
 			GameManager.TokenSelection = gameObject;
 		}
@@ -69,7 +88,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			cg.alpha = 1f;
 			transform.parent = parent;
 		} else {
-			rect.localScale = new Vector3 (0.15f, 0.15f, 1f);
+			rect.localScale = new Vector3 (0.25f, 0.25f, 1f);
+			cg.alpha = 0.75f;
 		}
 
 		GameManager.TokenSelection = null;

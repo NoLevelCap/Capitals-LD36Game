@@ -40,6 +40,8 @@ public class Token {
 
 	public string Desc;
 
+	public int TokenID;
+
 	public int UpPoints;
 
 	public int Progress = 0;
@@ -52,7 +54,7 @@ public class Token {
 
 	public bool Unlocked;
 
-	public Token(Type type, string name, Morality morals, Effect effect, int upPoints, string desc){
+	public Token(Type type, string name, Morality morals, Effect effect, int upPoints, int tokenID, string desc){
 		children = new List<Token> ();
 		Type = type;
 		Name = name;
@@ -60,6 +62,7 @@ public class Token {
 		UpPoints = upPoints;
 		Desc = desc;
 		Effect = effect;
+		TokenID = tokenID;
 		Unlocked = false;
 	}
 
