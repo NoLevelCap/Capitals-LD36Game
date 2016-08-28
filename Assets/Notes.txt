@@ -29,19 +29,16 @@ Decay?
 
 
 Things I need to do.
-
-DON@T THINK I NEED TO  - Increase in Science one
-DONE - Tech Tree
----- I can go to bed here ----
-  - Increase in science when you use the token for science token
-  - Floating Numbers
-  - Implement Sciences
-  - Models?
+After these do this.
+  - Balance Rarity
+  - Hide Tech Box if no tech is left;
+  - Input Output Data
+  - Icon Bug
   - Tutorial
-  - Menus and Stuff
-  - Look, style
-    - Increase Texture Detail
-  - Colored Tech Tree Parent and Name regarding science nuetral and others.
   - Shaders
   - Sort out behind bug
-  - Destroy effects properly (tbh i think this is being done)
+  - Make Icons
+    - Blank
+    - Increase Population
+  - Sound?
+  

@@ -12,7 +12,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public bool Locked, Dragged;
 	public Vector3 worldPos;
 
+	private Text Duration;
+
 	public Token token;
+	private AEffect activeeffect;
 	public Image Icon;
 
 	public int ExpDate;
@@ -44,6 +47,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			} else {
 				Show ();
 			}
+			int i = 0;
+			foreach (Transform child in transform.FindChild("Floaters")) {
+				Debug.Log ("ABC");
+				child.GetComponent<Text> ().text = activeeffect.getOutput()[i];
+				i++;
+			}
 		}
 	}
 
@@ -53,6 +62,19 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 	public void Show(){
 		cg.alpha = 0.75f;
+	}
+
+	public void UpdateDuration(){
+		if (Duration == null) {
+			Duration = transform.Find ("Info").FindChild ("Duration").GetChild (0).GetChild (1).GetComponent<Text> ();
+		} 
+		if (Locked && Dragged) {
+			Duration.text = ((ExpDate - GameManager.Day) + 1) + "";
+		} else {
+			Duration.text = ((token.Lifespan) + 1) + "";
+		}
+
+
 	}
 
 	public void OnBeginDrag (PointerEventData eventData)
@@ -67,18 +89,61 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		}
 	}
 
+	public void SetIcons(){
+		int[] types = token.Effect.GetIconTypes ();
+		Transform IconPanel = transform.Find ("Info").GetChild (0);
+		foreach (int icon in types) {
+			GameObject gm = Instantiate<GameObject> (GameManager.instance.Icon);
+			gm.transform.SetParent (IconPanel);
+			gm.transform.GetChild (0).GetComponent<Image> ().sprite = GameManager.instance.TokenIcons [icon];
+		}
+
+		if (token.Effect.getCost () > 0) {
+			transform.FindChild ("CostPanel").GetComponentInChildren<Text> ().text = token.Effect.getCost () + "";
+		} else {
+			transform.FindChild ("CostPanel").gameObject.SetActive (false);
+		}
+	}
+
 	public void OnEndDrag (PointerEventData eventData)
 	{
 		//Locked Check
 		if (!Locked) {
-			if (GameManager.BlockSelection != null && GameManager.BlockSelection.ActiveToken == null) {
-				worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 0.5f);
-				Locked = true;
-				ExpDate = GameManager.Day+token.Lifespan;
-				GameManager.BlockSelection.ActiveToken = this;
-				GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
-				GameManager.TokenPlayed = true;
-				Dragged = true;
+			if (GameManager.BlockSelection != null ){
+				if (GameManager.instance.ChargeACost (token.Name, token.Effect.getCost ())) {
+					if (GameManager.BlockSelection.ActiveToken == null || token.Effect.getType () == 1) {
+						if (token.Effect.getType () == 1 && GameManager.BlockSelection.ActiveToken != null) {
+							GameManager.BlockSelection.ActiveToken.ForceDestroy ();
+						}
+								
+						worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 3.5f);
+						Locked = true;
+						ExpDate = GameManager.Day + token.Lifespan;
+						GameManager.BlockSelection.ActiveToken = this;
+						GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
+						activeeffect = GameManager.BlockSelection.ActiveEffect;
+						GameManager.BlockSelection.ActiveEffect.SetParent (token);
+						GameManager.BlockSelection.ActiveEffect.setData (token.Effect.getData ());
+						GameManager.BlockSelection.ActiveEffect.OnDown (GameManager.BlockSelection);
+						GameManager.TokenPlayed = true;
+						UpdateDuration ();
+						Dragged = true;
+
+						Debug.Log (GameManager.BlockSelection.ActiveEffect.getOutput ().Length);
+						transform.FindChild ("Floaters").localPosition = new Vector3 (0, 150, 0);
+						foreach (string item in GameManager.BlockSelection.ActiveEffect.getOutput()) {
+							GameObject text = Instantiate <GameObject> (GameManager.instance.Floater);
+							text.transform.SetParent (transform.FindChild ("Floaters"), false);
+							text.name = "Floater";
+						}
+					} else {
+						GameManager.instance.Alert.text = "<color=red>That block has a token.</color>";
+						GameManager.instance.Alert.CrossFadeAlpha (1f, 0.2f, true);
+					}
+				} else {
+					GameManager.instance.Alert.text = "<color=red>You can not afford that token.</color>";
+					GameManager.instance.Alert.CrossFadeAlpha (1f, 0.2f, true);
+				}
 			}
 
 			
@@ -98,8 +163,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 	public void CheckForDestroy(){
 		if(GameManager.Day > ExpDate){
-			Debug.Log (ExpDate);
 			Destroy (gameObject);
 		}
+	}
+
+	public void ForceDestroy(){
+		Destroy (gameObject);
 	}
 }
