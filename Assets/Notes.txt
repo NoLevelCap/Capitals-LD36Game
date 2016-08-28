@@ -33,7 +33,7 @@ Things I need to do.
 DON@T THINK I NEED TO  - Increase in Science one
 DONE - Tech Tree
 ---- I can go to bed here ----
-  - Increase in science when you use the token for science token
+DONE  - Increase in science when you use the token for science token
   - Floating Numbers
   - Implement Sciences
   - Models?
@@ -45,3 +45,11 @@ DONE - Tech Tree
   - Shaders
   - Sort out behind bug
   - Destroy effects properly (tbh i think this is being done)
+  - Hand Size
+  - Make Icons
+    - Blank
+    - Negative Population
+    - Negative Taxes
+    - One Time Use
+    - Positive Population
+    - Positive Taxes

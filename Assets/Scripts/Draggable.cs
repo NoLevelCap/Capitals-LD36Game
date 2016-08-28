@@ -12,6 +12,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	public bool Locked, Dragged;
 	public Vector3 worldPos;
 
+	private Text Duration;
+
 	public Token token;
 	public Image Icon;
 
@@ -55,6 +57,17 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		cg.alpha = 0.75f;
 	}
 
+	public void UpdateDuration(){
+		if (Duration == null) {
+			Duration = transform.Find ("Info").FindChild ("Duration").GetChild (0).GetChild (0).GetComponent<Text> ();
+		} 
+		if (Locked && Dragged) {
+			Duration.text = ((ExpDate - GameManager.Day) + 1) + "";
+		} else {
+			Duration.text = ((token.Lifespan) + 1) + "";
+		}
+	}
+
 	public void OnBeginDrag (PointerEventData eventData)
 	{
 		if(!Locked){
@@ -64,6 +77,16 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			cg.alpha = 0.25f;
 			transform.parent = board;
 			GameManager.TokenSelection = gameObject;
+		}
+	}
+
+	public void SetIcons(){
+		int[] types = token.Effect.GetIconTypes ();
+		Transform IconPanel = transform.Find ("Info").GetChild (0);
+		foreach (int icon in types) {
+			GameObject gm = Instantiate<GameObject> (GameManager.instance.Icon);
+			gm.transform.SetParent (IconPanel);
+			gm.transform.GetChild (0).GetComponent<Image> ().sprite = GameManager.instance.TokenIcons [icon];
 		}
 	}
 
@@ -77,7 +100,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 				ExpDate = GameManager.Day+token.Lifespan;
 				GameManager.BlockSelection.ActiveToken = this;
 				GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
+				GameManager.BlockSelection.ActiveEffect.SetParent (token);
+				GameManager.BlockSelection.ActiveEffect.OnDown(GameManager.BlockSelection);
 				GameManager.TokenPlayed = true;
+				UpdateDuration ();
 				Dragged = true;
 			}
 
@@ -98,7 +124,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 	public void CheckForDestroy(){
 		if(GameManager.Day > ExpDate){
-			Debug.Log (ExpDate);
 			Destroy (gameObject);
 		}
 	}

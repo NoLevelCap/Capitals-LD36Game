@@ -16,15 +16,23 @@ public enum Type
 public abstract class AEffect : ScriptableObject {
 
 	private bool firstTrigger;
-
-	public float mod, cost;
+	public Token parent;
 
 	public AEffect(){
 		this.firstTrigger = true;
 	}
 
+	public void SetParent(Token Parent){
+		this.parent = Parent;
+	}
+
+	public void OnDown(CityGenerator block){
+		parent.IncreaseChildTech(1);
+	}
+
 	public void TriggerEffect(CityGenerator block){
 		if (!firstTrigger) {
+			parent.IncreaseChildTech(1);
 			MainEffect (block);
 		} else {
 			FirstTrigger (block);
@@ -40,7 +48,7 @@ public abstract class AEffect : ScriptableObject {
 	public abstract void MainEffect (CityGenerator block);
 
 	public abstract void OnDestoy (CityGenerator block);
-
+	public abstract int[] GetIconTypes();
 }
 
 public class Token {
@@ -76,6 +84,7 @@ public class Token {
 		Lifespan = lifespan;
 		Desc = desc;
 		Effect = effect;
+		Effect.SetParent (this);
 		TokenID = tokenID;
 		Unlocked = false;
 	}
@@ -84,6 +93,39 @@ public class Token {
 		Debug.Log ("Parent Set: " + parent.Name + " to " + Name);
 		this.parent = parent;
 		this.parent.children.Add (this);
+	}
+
+	public int IncreaseChildTech(int amount){
+		int amountleft = amount;
+		bool exaustedChildren = false;
+		foreach (Token child in children) {
+			if (!child.Unlocked && child.Progress < child.UpPoints) {
+				child.Progress += 1;
+				amountleft -= 1;
+			}
+
+			if(amountleft == 0){
+				return amountleft;
+			}
+		}
+
+		foreach (Token child in children) {
+			if (child.Unlocked || child.Progress >= child.UpPoints) {
+				amountleft = child.IncreaseChildTech (amountleft);
+			}
+
+			if(amountleft == 0){
+				return amountleft;
+			}
+		}
+		return amountleft;
+	}
+
+	public void CheckForUnlock(){
+		if (Progress >= UpPoints) {
+			Unlocked = true;
+		} else {
+		}
 	}
 		
 }
@@ -137,6 +179,15 @@ public class PopulationIncreaseEffect : AEffect
 	}
 
 	#endregion
+
+	#region implemented abstract members of AEffect
+
+	public override int[] GetIconTypes ()
+	{
+		return new int[]{0, 1};
+	}
+
+	#endregion
 }
 
 public class LocalTaxesIncreaseEffect : AEffect
@@ -165,7 +216,7 @@ public class LocalTaxesIncreaseEffect : AEffect
 			blocksAround[3] = GameManager.GetBlock(x+1, y);
 		}
 
-		block.CBD.TaxPP += 0.02f;
+		block.CBD.TaxPP += 1f;
 		foreach (CityGenerator blocks in blocksAround) {
 			if(blocks != null){
 				block.CBD.TaxPP += 0.01f;
@@ -194,4 +245,9 @@ public class LocalTaxesIncreaseEffect : AEffect
 	}
 
 	#endregion
+
+	public override int[] GetIconTypes ()
+	{
+		return new int[]{0};
+	}
 }
