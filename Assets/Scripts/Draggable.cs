@@ -49,6 +49,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			}
 			int i = 0;
 			foreach (Transform child in transform.FindChild("Floaters")) {
+				Debug.Log ("ABC");
 				child.GetComponent<Text> ().text = activeeffect.getOutput()[i];
 				i++;
 			}
@@ -65,7 +66,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 	public void UpdateDuration(){
 		if (Duration == null) {
-			Duration = transform.Find ("Info").FindChild ("Duration").GetChild (0).GetChild (0).GetComponent<Text> ();
+			Duration = transform.Find ("Info").FindChild ("Duration").GetChild (0).GetChild (1).GetComponent<Text> ();
 		} 
 		if (Locked && Dragged) {
 			Duration.text = ((ExpDate - GameManager.Day) + 1) + "";

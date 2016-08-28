@@ -432,7 +432,7 @@ public class BasicScienceIncreaserEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return new string[]{"EXAMPLE"};
 	}
 
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class CityBlockData
 {
 	public float[] height;
+	public int[] state;
 	public MeshRenderer[] ChildrenTowers;
 	public float MaxHeight = 0f;
 	public BoxCollider bc;
@@ -53,13 +54,30 @@ public class CityBlockData
 
 	private void ReAdjustPositioning(){
 		for (int i = 0; i < 4; i++) {
-			ChildrenTowers[i].transform.localScale = new Vector3 (0.38f, height[i], 0.38f);
-			ChildrenTowers[i].transform.localPosition = new Vector3 (ChildrenTowers[i].transform.localPosition.x, height[i]/2f, ChildrenTowers[i].transform.localPosition.z);
+			if(RedoMesh(i)){
+				float h = GameManager.instance.GetAppropriateHeight (height[i]);
+
+				//ChildrenTowers[i].transform.localScale = new Vector3 (0.38f, height[i], 0.38f);
+				//ChildrenTowers[i].transform.localPosition = new Vector3 (ChildrenTowers[i].transform.localPosition.x, height[i]/2f, ChildrenTowers[i].transform.localPosition.z);
+
+				ChildrenTowers[i].transform.localScale = new Vector3 (0.38f, 0.38f,h);
+				ChildrenTowers[i].transform.localRotation = Quaternion.Euler (-90, 0, 0);
+				ChildrenTowers[i].transform.localPosition = new Vector3 (ChildrenTowers[i].transform.localPosition.x, 0.57f, ChildrenTowers[i].transform.localPosition.z);
+			}
 		}
 
 
-		bc.size = new Vector3 (1.25f, MaxHeight+1f, 1.25f);
-		bc.center = new Vector3 (0, (MaxHeight+1f)/2f, 0);
+		bc.size = new Vector3 (1.25f, (GameManager.instance.GetAppropriateHeight (MaxHeight)+1f)/1f, 1.25f);
+		bc.center = new Vector3 (0, (GameManager.instance.GetAppropriateHeight (MaxHeight)+1f)/2f, 0);
+	}
+
+	public bool RedoMesh(int i){
+		if(GameManager.instance.GetState (height[i]) != state[i]){
+			ChildrenTowers [i].GetComponent<MeshFilter> ().mesh = GameManager.instance.GetAppropriateMesh(height[i]);
+			state[i] = GameManager.instance.GetState (height[i]);
+			return true;
+		}
+		return false;
 	}
 
 	public void CheckMaxHeight(float height){
@@ -96,6 +114,7 @@ public class CityGenerator : MonoBehaviour {
 		CBD = new CityBlockData ();
 		CBD.ChildrenTowers = new MeshRenderer[4];
 		CBD.height = new float[4];
+		CBD.state = new int[4];
 		int a = 0;
 		for (int x = -1; x < 2; x+=2) {
 			for (int y = -1; y < 2; y+=2) {
@@ -108,9 +127,14 @@ public class CityGenerator : MonoBehaviour {
 				}
 
 				CBD.CheckMaxHeight (CBD.height[a]);
-				Tower.transform.localScale = new Vector3 (0.38f, CBD.height[a], 0.38f);
-				Tower.transform.localPosition = new Vector3 (x*0.25f, CBD.height[a]/2f, y*0.25f);
+				float height = GameManager.instance.GetAppropriateHeight (CBD.height[a]);
+
+				Tower.transform.localScale = new Vector3 (0.38f, 0.38f,height);
+				Tower.transform.localRotation = Quaternion.Euler (-90, 0, 0);
+				Tower.transform.localPosition = new Vector3 (x*0.25f, 0.57f, y*0.25f);
 				CBD.ChildrenTowers[a] = Tower.GetComponent<MeshRenderer>();
+				CBD.ChildrenTowers [a].GetComponent<MeshFilter> ().mesh = GameManager.instance.GetAppropriateMesh(CBD.height[a]);
+				CBD.state[a] = GameManager.instance.GetState (CBD.height[a]);
 				a++;
 			}
 		}
@@ -119,8 +143,8 @@ public class CityGenerator : MonoBehaviour {
 		my = dy;
 
 		BoxCollider bc = GetComponent<BoxCollider> ();
-		bc.size = new Vector3 (1.25f, CBD.MaxHeight+1f, 1.25f);
-		bc.center = new Vector3 (0, (CBD.MaxHeight+1f)/2f, 0);
+		bc.size = new Vector3 (1.25f, (GameManager.instance.GetAppropriateHeight (CBD.MaxHeight)+1f)/1f, 1.25f);
+		bc.center = new Vector3 (0, (GameManager.instance.GetAppropriateHeight (CBD.MaxHeight)+1f)/2f, 0);
 		CBD.bc = bc;
 	}
 	

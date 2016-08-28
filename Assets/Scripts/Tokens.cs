@@ -130,10 +130,18 @@ public class Token {
 		return amountleft;
 	}
 
+	public bool ShouldBeLocked(){
+		foreach (Token child in children) {
+			if(Progress < UpPoints){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void CheckForUnlock(){
-		Debug.Log ("CHECK " + Name + ": " + (Progress >= UpPoints));
 		if (Progress >= UpPoints) {
-			parent.Unlocked = false;
+			parent.Unlocked = ShouldBeLocked ();
 			Unlocked = true;
 		} else {
 			Unlocked = false;
