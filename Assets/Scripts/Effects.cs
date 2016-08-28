@@ -397,9 +397,11 @@ public class BasicScienceIncreaserEffect:AEffect
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
+		parent.IncreaseChildTech (amount);
 	}
 	public override void MainEffect (CityGenerator block)
 	{
+		parent.IncreaseChildTech (amount);
 	}
 	public override void OnDestoy (CityGenerator block)
 	{

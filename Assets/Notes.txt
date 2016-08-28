@@ -29,15 +29,15 @@ Decay?
 
 
 Things I need to do.
-  - Science Limits taxes but improves Biusiness
-  - Floating Numbers
-  - Feedback for invalid placement
+After these do this.
+  - Balance Rarity
+  - Hide Tech Box if no tech is left;
+  - Input Output Data
   - Models?
   - Tutorial
   - Menus and Stuff
-  - Look, style
+  - Look, style; Officey?
     - Increase Texture Detail
-  - Colored Tech Tree Parent and Name regarding science nuetral and others.
   - Shaders
   - Sort out behind bug
   - Make Icons
