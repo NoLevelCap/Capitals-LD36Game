@@ -27,12 +27,10 @@ public abstract class AEffect : ScriptableObject {
 	}
 
 	public void OnDown(CityGenerator block){
-		parent.IncreaseChildTech(1);
 	}
 
 	public void TriggerEffect(CityGenerator block){
 		if (!firstTrigger) {
-			parent.IncreaseChildTech(1);
 			MainEffect (block);
 		} else {
 			FirstTrigger (block);
@@ -52,6 +50,7 @@ public abstract class AEffect : ScriptableObject {
 	public abstract void OnDestoy (CityGenerator block);
 	public abstract int[] GetIconTypes();
 	public abstract int getCost ();
+	public abstract string[] getOutput ();
 	public abstract int getType ();
 	public abstract float[] getData ();
 	public abstract void setData (float[] data);
@@ -103,6 +102,7 @@ public class Token {
 		this.parent = parent;
 		this.parent.children.Add (this);
 	}
+		
 
 	public int IncreaseChildTech(int amount){
 		int amountleft = amount;
@@ -131,9 +131,12 @@ public class Token {
 	}
 
 	public void CheckForUnlock(){
+		Debug.Log ("CHECK " + Name + ": " + (Progress >= UpPoints));
 		if (Progress >= UpPoints) {
+			parent.Unlocked = false;
 			Unlocked = true;
 		} else {
+			Unlocked = false;
 		}
 	}
 		

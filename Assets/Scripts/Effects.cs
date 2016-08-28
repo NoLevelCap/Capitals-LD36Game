@@ -45,25 +45,23 @@ public class PopulationIncreaseEffect : AEffect
 		}
 	}
 
-	#region implemented abstract members of AEffect
-
 	public override void OnDestoy (CityGenerator block)
 	{
 		GameObject.Destroy (this);
 	}
 
-	#endregion
-
-	#region implemented abstract members of AEffect
 
 	public override int[] GetIconTypes ()
 	{
 		return new int[]{0, 1};
 	}
 
-	#endregion
 
-	#region implemented abstract members of AEffect
+	public override string[] getOutput ()
+	{
+		return new string[]{"Example", "ABCUS"};
+	}
+
 
 	public override int getCost ()
 	{
@@ -74,10 +72,6 @@ public class PopulationIncreaseEffect : AEffect
 	{
 		return data;
 	}
-
-	#endregion
-
-	#region implemented abstract members of AEffect
 
 	public override void setData (float[] data)
 	{
@@ -91,7 +85,6 @@ public class PopulationIncreaseEffect : AEffect
 	{
 		return 0;
 	}
-	#endregion
 }
 
 public class LocalTaxesIncreaseEffect : AEffect
@@ -180,6 +173,11 @@ public class LocalTaxesIncreaseEffect : AEffect
 	{
 		return 0;
 	}
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
+
 }
 
 public class AddCardsEffect:AEffect
@@ -225,7 +223,11 @@ public class AddCardsEffect:AEffect
 		return 0;
 	}
 	#endregion
-	
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
+
 }
 
 public class IncreasePopEffect:AEffect
@@ -275,6 +277,10 @@ public class IncreasePopEffect:AEffect
 		return 0;
 	}
 	#endregion
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
 
 }
 
@@ -322,6 +328,10 @@ public class IncreaseMoney:AEffect
 		return 0;
 	}
 	#endregion
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
 
 }
 
@@ -371,6 +381,57 @@ public class ClearTilesEffect:AEffect
 	}
 
 	#endregion
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
+
+}
+
+public class BasicScienceIncreaserEffect:AEffect
+{
+
+	private float[] data;
+	private int amount;
+
+	#region implemented abstract members of AEffect
+	public override void PreEffect (CityGenerator block)
+	{
+	}
+	public override void MainEffect (CityGenerator block)
+	{
+	}
+	public override void OnDestoy (CityGenerator block)
+	{
+
+	}
+	public override int[] GetIconTypes ()
+	{
+		return new int[]{};
+	}
+	public override int getCost ()
+	{
+		return 0;
+	}
+	public override void setData (float[] data)
+	{
+		this.data = data;
+		amount = Mathf.RoundToInt(data [0]);
+	}
+	public override float[] getData ()
+	{
+		return data;
+	}
+
+	public override int getType ()
+	{
+		return 0;
+	}
+	#endregion
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
 
 }
 
@@ -417,6 +478,10 @@ public class BasicPrefaceEffect:AEffect
 		return 0;
 	}
 	#endregion
+	public override string[] getOutput ()
+	{
+		return new string[]{};
+	}
 
 }
 
