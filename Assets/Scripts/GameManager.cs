@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 
 
 	public GameObject[] TokenObjects;
+
+	public Mesh[] SmallProperties, MidSizedProperties, LargeProperties;
 	public Sprite[] TokenIcons;
 
 	public GameObject TechData, TechTree;
@@ -143,9 +145,9 @@ public class GameManager : MonoBehaviour {
 			foreach (Token child in tech.children) {
 				if(!child.Unlocked){
 					GameObject gj = Instantiate<GameObject> (TechData);
-					gj.transform.parent = TechTree.transform;
-					gj.transform.GetChild (0).GetComponent<Text> ().text = "<color=" + GetTypeColor(child.Type) + ">" + child.Name + "</color>";
-					gj.transform.GetChild (1).GetChild (0).GetComponent<Image> ().sprite = TokenIcons [child.TokenID];
+					gj.transform.SetParent(TechTree.transform, false);
+					gj.transform.GetChild (1).GetComponent<Text> ().text = "<color=" + GetTypeColor(child.Type) + ">" + child.Name + "</color>";
+					gj.transform.GetChild (2).GetChild (0).GetComponent<Image> ().sprite = TokenIcons [child.TokenID];
 					gj.transform.GetChild (3).GetComponent<Text> ().text = child.Desc;
 					gj.transform.GetChild (4).GetComponent<Text> ().text = "<color=" + GetTypeColor(tech.Type) + ">" + tech.Name + "</color>";
 					gj.transform.GetChild (5).GetChild (1).GetComponent<Image> ().fillAmount = (float) child.Progress / (float) child.UpPoints;
@@ -186,7 +188,7 @@ public class GameManager : MonoBehaviour {
 				UnlockedTokens.Add (token);
 			} else {
 			}
-			
+
 		}
 	}
 
@@ -283,6 +285,12 @@ public class GameManager : MonoBehaviour {
 		child = new Token (Type.Buisness, "Farms", Morality.Neutral, nEffect, 25, 10, 1, 0.75f, "");
 		tokens.Add (child.Name, child);
 
+		/*nEffect = ScriptableObject.CreateInstance<IncreasePopEffect>();
+		nEffect.setData (new float[]{0f, 80f, 1f});
+		child = new Token (Type.Buisness, "SuperBOON", Morality.Neutral, nEffect, 1, 0, 1, 1f, "");
+		tokens.Add (child.Name, child);
+		child.Unlocked = true;*/
+
 		nEffect = ScriptableObject.CreateInstance<IncreaseMoney>();
 		nEffect.setData (new float[]{200f});
 		child = new Token (Type.Buisness, "A Front", Morality.Neutral, nEffect, 30, 10, 1, 0.75f, "");
@@ -368,5 +376,38 @@ public class GameManager : MonoBehaviour {
 			return Blocks [(mx * width * 2) + my ];
 		}
 		return null;
+	}
+
+	public Mesh GetAppropriateMesh(float height){
+		if(height > 20){
+			return LargeProperties [Random.Range(0, LargeProperties.Length)];
+		} else if(height > 10){
+			return MidSizedProperties [Random.Range(0, MidSizedProperties.Length)];
+		} else if(height > 0){
+			return SmallProperties [Random.Range(0, SmallProperties.Length)];
+		}  
+		return null;
+	}
+
+	public float GetAppropriateHeight(float height){
+		if(height > 20){
+			return 40f;
+		} else if(height > 10){
+			return 20f;
+		} else if(height > 0){
+			return 5f;
+		}  
+		return 0f;
+	}
+
+	public int GetState(float height){
+		if(height > 20){
+			return 3;
+		} else if(height > 10){
+			return 2;
+		} else if(height > 0){
+			return 1;
+		}  
+		return 0;
 	}
 }
