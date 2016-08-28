@@ -88,23 +88,38 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			gm.transform.SetParent (IconPanel);
 			gm.transform.GetChild (0).GetComponent<Image> ().sprite = GameManager.instance.TokenIcons [icon];
 		}
+
+		if (token.Effect.getCost () > 0) {
+			transform.FindChild ("CostPanel").GetComponentInChildren<Text> ().text = token.Effect.getCost () + "";
+		} else {
+			transform.FindChild ("CostPanel").gameObject.SetActive (false);
+		}
 	}
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
 		//Locked Check
 		if (!Locked) {
-			if (GameManager.BlockSelection != null && GameManager.BlockSelection.ActiveToken == null) {
-				worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 0.5f);
-				Locked = true;
-				ExpDate = GameManager.Day+token.Lifespan;
-				GameManager.BlockSelection.ActiveToken = this;
-				GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
-				GameManager.BlockSelection.ActiveEffect.SetParent (token);
-				GameManager.BlockSelection.ActiveEffect.OnDown(GameManager.BlockSelection);
-				GameManager.TokenPlayed = true;
-				UpdateDuration ();
-				Dragged = true;
+			if (GameManager.BlockSelection != null ){
+				if (GameManager.instance.ChargeACost (token.Name, token.Effect.getCost ())) {
+					if (GameManager.BlockSelection.ActiveToken == null || token.Effect.getType () == 1) {
+						if (token.Effect.getType () == 1) {
+							GameManager.BlockSelection.ActiveToken.ForceDestroy ();
+						}
+								
+						worldPos = GameManager.BlockSelection.transform.position + new Vector3 (0, (GameManager.BlockSelection.TowerHealth * 0.1f) + 3.5f);
+						Locked = true;
+						ExpDate = GameManager.Day + token.Lifespan;
+						GameManager.BlockSelection.ActiveToken = this;
+						GameManager.BlockSelection.ActiveEffect = Instantiate<AEffect> (token.Effect);
+						GameManager.BlockSelection.ActiveEffect.SetParent (token);
+						GameManager.BlockSelection.ActiveEffect.setData (token.Effect.getData ());
+						GameManager.BlockSelection.ActiveEffect.OnDown (GameManager.BlockSelection);
+						GameManager.TokenPlayed = true;
+						UpdateDuration ();
+						Dragged = true;
+					}
+				}
 			}
 
 			
@@ -126,5 +141,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		if(GameManager.Day > ExpDate){
 			Destroy (gameObject);
 		}
+	}
+
+	public void ForceDestroy(){
+		Destroy (gameObject);
 	}
 }

@@ -29,13 +29,9 @@ Decay?
 
 
 Things I need to do.
-
-DON@T THINK I NEED TO  - Increase in Science one
-DONE - Tech Tree
----- I can go to bed here ----
-DONE  - Increase in science when you use the token for science token
+  - Science Limits taxes but improves Biusiness
   - Floating Numbers
-  - Implement Sciences
+  - Feedback for invalid placement
   - Models?
   - Tutorial
   - Menus and Stuff
@@ -44,8 +40,6 @@ DONE  - Increase in science when you use the token for science token
   - Colored Tech Tree Parent and Name regarding science nuetral and others.
   - Shaders
   - Sort out behind bug
-  - Destroy effects properly (tbh i think this is being done)
-  - Hand Size
   - Make Icons
     - Blank
     - Negative Population

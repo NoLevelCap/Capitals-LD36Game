@@ -38,7 +38,7 @@ public class MoneyManager : MonoBehaviour {
 			int amount = AmountsList.ToArray () [i];
 			string name = NamesList.ToArray () [i];
 			if (amount < 0) {
-				Amounts = "<color=#FF2E2E" + ("") + ">£" + amount + "</color>" + "\n" + Amounts;
+				Amounts = "<color=#FF2E2E" + ("") + ">£" + -amount + "</color>" + "\n" + Amounts;
 			} else {
 				Amounts = "<color=#2EFF2E" + ("") + ">£" + amount + "</color>" + "\n" + Amounts;
 			}

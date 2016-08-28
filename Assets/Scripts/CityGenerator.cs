@@ -132,11 +132,12 @@ public class CityGenerator : MonoBehaviour {
 			
 
 		if(ActiveToken != null){
-			ActiveToken.worldPos = transform.position + new Vector3(0, (TowerHealth*0.1f) + 0.5f );
+			ActiveToken.worldPos = transform.position + new Vector3(0, (TowerHealth*0.1f) + 1.5f );
 		}
 	}
 
 	public void TurnRed(){
+		GetComponent<MeshRenderer> ().material.color = Color.red;
 		foreach (MeshRenderer tower in CBD.ChildrenTowers) {
 			tower.material.color = Color.red;
 		}
@@ -144,6 +145,7 @@ public class CityGenerator : MonoBehaviour {
 	}
 
 	void TurnWhite(){
+		GetComponent<MeshRenderer> ().material.color = new Color(114f/255f, 114f/255f, 114f/255f);
 		foreach (MeshRenderer tower in CBD.ChildrenTowers) {
 			tower.material.color = Color.white;
 		}

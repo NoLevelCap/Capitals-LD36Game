@@ -9,7 +9,7 @@ public enum Morality
 
 public enum Type
 {
-	Buisness, Science
+	Buisness, Science, Neutral
 }
 	
 
@@ -39,6 +39,8 @@ public abstract class AEffect : ScriptableObject {
 		}
 	}
 
+
+
 	public void FirstTrigger(CityGenerator block){
 		PreEffect (block);
 		firstTrigger = false;
@@ -49,6 +51,10 @@ public abstract class AEffect : ScriptableObject {
 
 	public abstract void OnDestoy (CityGenerator block);
 	public abstract int[] GetIconTypes();
+	public abstract int getCost ();
+	public abstract int getType ();
+	public abstract float[] getData ();
+	public abstract void setData (float[] data);
 }
 
 public class Token {
@@ -75,17 +81,20 @@ public class Token {
 
 	public bool Unlocked;
 
-	public Token(Type type, string name, Morality morals, AEffect effect, int lifespan, int upPoints, int tokenID, string desc){
+	public float Rarity;
+
+	public Token(Type type, string name, Morality morals, AEffect effect, int lifespan, int upPoints, int tokenID, float rarity, string desc){
 		children = new List<Token> ();
 		Type = type;
 		Name = name;
 		morality = morals;
 		UpPoints = upPoints;
-		Lifespan = lifespan;
+		Lifespan = lifespan-1;
 		Desc = desc;
 		Effect = effect;
 		Effect.SetParent (this);
 		TokenID = tokenID;
+		Rarity = rarity;
 		Unlocked = false;
 	}
 
@@ -130,124 +139,4 @@ public class Token {
 		
 }
 
-public class PopulationIncreaseEffect : AEffect
-{
-	private static float mod = 0.02f;
 
-	CityGenerator[] blocksAround;
-
-	public override void PreEffect (CityGenerator block)
-	{
-
-		int x = block.mx;
-		int y = block.my;
-		blocksAround = new CityGenerator[4];
-		if(x-1 >= 0){
-			blocksAround[0] = GameManager.GetBlock(x-1, y);
-		}
-
-		if(y-1 >= 0){
-			blocksAround[1] = GameManager.GetBlock(x, y-1);
-		}
-
-		if(y+1 < GameManager.height*2){
-			blocksAround[2] = GameManager.GetBlock(x, y+1);
-		}
-
-		if(x+1 < GameManager.width*2){
-			blocksAround[3] = GameManager.GetBlock(x+1, y);
-		}
-
-		MainEffect (block);
-
-	}
-	public override void MainEffect (CityGenerator block)
-	{
-		block.CBD.SpefPopulation (0.04f, 2f);
-		foreach (CityGenerator blocks in blocksAround) {
-			if(blocks != null){
-				blocks.CBD.SpefPopulation (0.02f, 1f);
-			}
-		}
-	}
-
-	#region implemented abstract members of AEffect
-
-	public override void OnDestoy (CityGenerator block)
-	{
-		GameObject.Destroy (this);
-	}
-
-	#endregion
-
-	#region implemented abstract members of AEffect
-
-	public override int[] GetIconTypes ()
-	{
-		return new int[]{0, 1};
-	}
-
-	#endregion
-}
-
-public class LocalTaxesIncreaseEffect : AEffect
-{
-	CityGenerator[] blocksAround;
-
-	public override void PreEffect (CityGenerator block)
-	{
-
-		int x = block.mx;
-		int y = block.my;
-		blocksAround = new CityGenerator[4];
-		if(x-1 >= 0){
-			blocksAround[0] = GameManager.GetBlock(x-1, y);
-		}
-
-		if(y-1 >= 0){
-			blocksAround[1] = GameManager.GetBlock(x, y-1);
-		}
-
-		if(y+1 < GameManager.height*2){
-			blocksAround[2] = GameManager.GetBlock(x, y+1);
-		}
-
-		if(x+1 < GameManager.width*2){
-			blocksAround[3] = GameManager.GetBlock(x+1, y);
-		}
-
-		block.CBD.TaxPP += 1f;
-		foreach (CityGenerator blocks in blocksAround) {
-			if(blocks != null){
-				block.CBD.TaxPP += 0.01f;
-			}
-		}
-
-		MainEffect (block);
-
-	}
-	public override void MainEffect (CityGenerator block)
-	{
-		block.CBD.IncreasePopulation (-0.04f);
-
-		foreach (CityGenerator blocks in blocksAround) {
-			if(blocks != null){
-				blocks.CBD.IncreasePopulation (-0.02f);
-			}
-		}
-	}
-
-	#region implemented abstract members of AEffect
-
-	public override void OnDestoy (CityGenerator block)
-	{
-		GameObject.Destroy (this);
-	}
-
-	#endregion
-
-	public override int[] GetIconTypes ()
-	{
-		return new int[]{0};
-	}
-}
