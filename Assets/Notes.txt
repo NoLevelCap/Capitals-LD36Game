@@ -33,13 +33,12 @@ After these do this.
   - Balance Rarity
   - Hide Tech Box if no tech is left;
   - Input Output Data
+  - Icon Bug
   - Tutorial
   - Shaders
   - Sort out behind bug
   - Make Icons
     - Blank
-    - Negative Population
-    - Negative Taxes
-    - One Time Use
-    - Positive Population
-    - Positive Taxes
+    - Increase Population
+  - Sound?
+  

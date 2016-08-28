@@ -149,7 +149,7 @@ public class LocalTaxesIncreaseEffect : AEffect
 
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{0};
+		return new int[]{1};
 	}
 
 	public override int getCost ()
@@ -201,7 +201,7 @@ public class AddCardsEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{};
+		return new int[]{2};
 	}
 	public override int getCost ()
 	{
@@ -307,7 +307,7 @@ public class IncreaseMoney:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{};
+		return new int[]{1};
 	}
 	public override int getCost ()
 	{
@@ -355,7 +355,7 @@ public class ClearTilesEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{};
+		return new int[]{5};
 	}
 	public override int getCost ()
 	{
@@ -409,7 +409,7 @@ public class BasicScienceIncreaserEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{};
+		return new int[]{3};
 	}
 	public override int getCost ()
 	{
