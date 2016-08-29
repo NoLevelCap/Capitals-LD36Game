@@ -11,6 +11,7 @@ public class CityBlockData
 	public float MaxHeight = 0f;
 	public BoxCollider bc;
 
+	public float[] zrot;
 	public float TaxPP = 0.01f;
 	public float Pop, Taxes;
 
@@ -61,7 +62,7 @@ public class CityBlockData
 				//ChildrenTowers[i].transform.localPosition = new Vector3 (ChildrenTowers[i].transform.localPosition.x, height[i]/2f, ChildrenTowers[i].transform.localPosition.z);
 
 				ChildrenTowers[i].transform.localScale = new Vector3 (0.38f, 0.38f,h);
-				ChildrenTowers[i].transform.localRotation = Quaternion.Euler (-90, 0, 0);
+				ChildrenTowers[i].transform.localRotation = Quaternion.Euler (-90, 0, zrot[i]);
 				ChildrenTowers[i].transform.localPosition = new Vector3 (ChildrenTowers[i].transform.localPosition.x, 0.57f, ChildrenTowers[i].transform.localPosition.z);
 			}
 		}
@@ -115,6 +116,7 @@ public class CityGenerator : MonoBehaviour {
 		CBD.ChildrenTowers = new MeshRenderer[4];
 		CBD.height = new float[4];
 		CBD.state = new int[4];
+		CBD.zrot = new float[4];
 		int a = 0;
 		for (int x = -1; x < 2; x+=2) {
 			for (int y = -1; y < 2; y+=2) {
@@ -129,8 +131,21 @@ public class CityGenerator : MonoBehaviour {
 				CBD.CheckMaxHeight (CBD.height[a]);
 				float height = GameManager.instance.GetAppropriateHeight (CBD.height[a]);
 
+
+				if (x < 0) {
+					CBD.zrot[a] = 90;
+					if(y > 0){
+						CBD.zrot[a] = 180;
+					}
+				} else {
+					CBD.zrot[a] = 0;
+					if(y > 0){
+						CBD.zrot[a] = -90;
+					}
+				}
+
 				Tower.transform.localScale = new Vector3 (0.38f, 0.38f,height);
-				Tower.transform.localRotation = Quaternion.Euler (-90, 0, 0);
+				Tower.transform.localRotation = Quaternion.Euler (-90, 0, CBD.zrot[a]);
 				Tower.transform.localPosition = new Vector3 (x*0.25f, 0.57f, y*0.25f);
 				CBD.ChildrenTowers[a] = Tower.GetComponent<MeshRenderer>();
 				CBD.ChildrenTowers [a].GetComponent<MeshFilter> ().mesh = GameManager.instance.GetAppropriateMesh(CBD.height[a]);

@@ -93,7 +93,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			cg.alpha = 0.25f;
 			transform.SetParent(board, false);
 			GameManager.TokenSelection = gameObject;
+			AudioManager.instance.Play ("Pick/Place", 0.25f);
 		}
+
 	}
 
 	public void SetIcons(){
@@ -142,6 +144,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 							text.transform.SetParent (transform.FindChild ("Floaters"), false);
 							text.name = "Floater";
 						}
+
+						AudioManager.instance.Play ("Pick/Place", 0.25f);
+
 					} else {
 						GameManager.instance.Alert.text = "<color=red>That block has a token.</color>";
 						GameManager.instance.Alert.CrossFadeAlpha (1f, 0.2f, true);

@@ -402,9 +402,9 @@ public class GameManager : MonoBehaviour {
 
 	public float GetAppropriateHeight(float height){
 		if(height > 20){
-			return 40f;
+			return 5f;
 		} else if(height > 10){
-			return 20f;
+			return 5f;
 		} else if(height > 0){
 			return 5f;
 		}  

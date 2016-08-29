@@ -11,29 +11,64 @@ ModelImporter:
     100006: Farmhouse_002
     100008: Farmhouse_003
     100010: Farmhouse_000
+    100012: Base
+    100014: Base_001
+    100016: Base_002
+    100018: House
+    100020: Shops_001
+    100022: SmallApartments
+    100024: TallApartments
     400000: //RootNode
     400002: Farmhouse
     400004: Farmhouse_001
     400006: Farmhouse_002
     400008: Farmhouse_003
     400010: Farmhouse_000
+    400012: Base
+    400014: Base_001
+    400016: Base_002
+    400018: House
+    400020: Shops_001
+    400022: SmallApartments
+    400024: TallApartments
     2300000: //RootNode
     2300002: Farmhouse
     2300004: Farmhouse_001
     2300006: Farmhouse_002
     2300008: Farmhouse_003
     2300010: Farmhouse_000
+    2300012: Base
+    2300014: Base_001
+    2300016: Base_002
+    2300018: House
+    2300020: Shops_001
+    2300022: SmallApartments
+    2300024: TallApartments
     3300000: //RootNode
     3300002: Farmhouse
     3300004: Farmhouse_001
     3300006: Farmhouse_002
     3300008: Farmhouse_003
     3300010: Farmhouse_000
+    3300012: Base
+    3300014: Base_001
+    3300016: Base_002
+    3300018: House
+    3300020: Shops_001
+    3300022: SmallApartments
+    3300024: TallApartments
     4300000: Farmhouse
     4300002: Farmhouse_003
     4300004: Farmhouse_002
     4300006: Farmhouse_001
     4300008: Farmhouse_000
+    4300010: Base_002
+    4300012: Base_001
+    4300014: Shops_001
+    4300016: House
+    4300018: Base
+    4300020: TallApartments
+    4300022: SmallApartments
     7400000: Default Take
     9500000: //RootNode
   materials:
