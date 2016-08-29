@@ -424,7 +424,7 @@ public class BasicScienceIncreaserEffect:AEffect
 {
 
 	private float[] data;
-	private int amount;
+	private int amount, cost;
 	private List<string> output;
 
 	#region implemented abstract members of AEffect
@@ -451,12 +451,13 @@ public class BasicScienceIncreaserEffect:AEffect
 	}
 	public override int getCost ()
 	{
-		return 0;
+		return cost;
 	}
 	public override void setData (float[] data)
 	{
 		this.data = data;
 		amount = Mathf.RoundToInt(data [0]);
+		cost = Mathf.RoundToInt(data [1]);
 	}
 	public override float[] getData ()
 	{
