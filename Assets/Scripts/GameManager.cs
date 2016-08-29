@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject[] TokenObjects;
 
 	public Mesh[] SmallProperties, MidSizedProperties, LargeProperties;
-	public Sprite[] TokenIcons;
+	public Sprite[] EffectIcons, TokenIcons;
 
 	public GameObject TechData, TechTree;
 	public MoneyManager Man;
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour {
 			Man.AddValue ("Day " + (Day+1) + " taxes", Mathf.RoundToInt (Taxes));
 			Day++;
 
-			if(HandSize < 4){
+			if(HandSize < 5){
 				FillHand (1);
 			}
 
@@ -245,44 +245,44 @@ public class GameManager : MonoBehaviour {
 	void initTokens(){
 		AEffect nEffect = ScriptableObject.CreateInstance<PopulationIncreaseEffect>();
 		nEffect.setData (new float[]{15f, 0.01f, 0.02f});
-		Token child = new Token (Type.Buisness, "Tourism Board", Morality.Neutral, nEffect, 10, 10, 0, 1f, "");
+		Token child = new Token (Type.Buisness, "Tourism Board", Morality.Neutral, nEffect, 10, 10, 4, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<LocalTaxesIncreaseEffect>();
 		nEffect.setData (new float[]{0.02f, 0.04f, 0.01f});
-		child = new Token (Type.Buisness, "Tax Office", Morality.Neutral, nEffect, 10, 10, 1, 1f, "");
+		child = new Token (Type.Buisness, "Tax Office", Morality.Neutral, nEffect, 10, 10, 5, 1f, "");
 		tokens.Add (child.Name, child);
 
 		//PopIncreaseGroup
 		nEffect = ScriptableObject.CreateInstance<PopulationIncreaseEffect>();
 		nEffect.setData (new float[]{50f, 0.02f, 0.04f});
-		child = new Token(Type.Buisness, "Bus Station", Morality.Neutral, nEffect, 10, 10, 2, 1f, "");
+		child = new Token(Type.Buisness, "Bus Station", Morality.Neutral, nEffect, 10, 10, 12, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<PopulationIncreaseEffect>();
 		nEffect.setData (new float[]{200f, 0.04f, 0.08f});
-		child = new Token(Type.Buisness, "Railway", Morality.Neutral, nEffect, 10, 10, 2, 1f, "");
+		child = new Token(Type.Buisness, "Railway", Morality.Neutral, nEffect, 10, 10, 13, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<PopulationIncreaseEffect>();
 		nEffect.setData (new float[]{1000f, 0.08f, 0.16f});
-		child = new Token(Type.Buisness, "Airport", Morality.Neutral, nEffect, 10, 10, 2, 1f, "");
+		child = new Token(Type.Buisness, "Airport", Morality.Neutral, nEffect, 10, 10, 14, 1f, "");
 		tokens.Add (child.Name, child);
 
 		//TaxesIncreaseGroup
 		nEffect = ScriptableObject.CreateInstance<LocalTaxesIncreaseEffect>();
 		nEffect.setData (new float[]{0.04f, 0.08f, 0.02f});
-		child = new Token(Type.Buisness, "The Printing Press", Morality.Neutral, nEffect, 20, 10, 2, 1f, "");
+		child = new Token(Type.Buisness, "The Printing Press", Morality.Neutral, nEffect, 20, 10, 15, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<AddCardsEffect>();
 		nEffect.setData (new float[]{10f, 2f});
-		child = new Token (Type.Buisness, "General Store", Morality.Neutral, nEffect, 40, 10, 1, 0.1f, "");
+		child = new Token (Type.Buisness, "General Store", Morality.Neutral, nEffect, 40, 10, 16, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<IncreasePopEffect>();
 		nEffect.setData (new float[]{10f, 2f, 1f});
-		child = new Token (Type.Buisness, "Farms", Morality.Neutral, nEffect, 25, 10, 1, 0.75f, "");
+		child = new Token (Type.Buisness, "Farms", Morality.Neutral, nEffect, 25, 10, 17, 0.75f, "");
 		tokens.Add (child.Name, child);
 
 		/*nEffect = ScriptableObject.CreateInstance<IncreasePopEffect>();
@@ -293,12 +293,12 @@ public class GameManager : MonoBehaviour {
 
 		nEffect = ScriptableObject.CreateInstance<IncreaseMoney>();
 		nEffect.setData (new float[]{200f});
-		child = new Token (Type.Buisness, "A Front", Morality.Neutral, nEffect, 30, 10, 1, 0.75f, "");
+		child = new Token (Type.Buisness, "A Front", Morality.Neutral, nEffect, 30, 10, 18, 0.75f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<ClearTilesEffect>();
 		nEffect.setData (new float[]{5f, 1f});
-		child = new Token (Type.Buisness, "A Park", Morality.Neutral, nEffect, 2, 10, 1, 0.75f, "");
+		child = new Token (Type.Buisness, "A Park", Morality.Neutral, nEffect, 2, 10, 19, 0.75f, "");
 		tokens.Add (child.Name, child);
 
 		//Sciences
@@ -311,46 +311,46 @@ public class GameManager : MonoBehaviour {
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "The Wheel", Morality.Neutral, nEffect, 10, 0, 1, 1f, "");
+		child = new Token (Type.Science, "The Wheel", Morality.Neutral, nEffect, 10, 0, 2, 1f, "");
 		tokens.Add (child.Name, child);
 		child.Unlocked = true;
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Metalworking", Morality.Neutral, nEffect, 10, 0, 1, 1f, "");
+		child = new Token (Type.Science, "Metalworking", Morality.Neutral, nEffect, 10, 0, 3, 1f, "");
 		tokens.Add (child.Name, child);
 		child.Unlocked = true;
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Horse & Cart", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
+		child = new Token (Type.Science, "Horse & Cart", Morality.Neutral, nEffect, 40, 10, 6, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Engine", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
+		child = new Token (Type.Science, "Engine", Morality.Neutral, nEffect, 40, 10, 7, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Flight", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
+		child = new Token (Type.Science, "Flight", Morality.Neutral, nEffect, 40, 10, 8, 1f, "");
 		tokens.Add (child.Name, child);
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Farming", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
-		tokens.Add (child.Name, child);
-		child.Unlocked = true;
-
-		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
-		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Abacus", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
+		child = new Token (Type.Science, "Farming", Morality.Neutral, nEffect, 40, 10, 9, 1f, "");
 		tokens.Add (child.Name, child);
 		child.Unlocked = true;
 
 		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
 		nEffect.setData (new float[]{1f});
-		child = new Token (Type.Science, "Archeology", Morality.Neutral, nEffect, 40, 10, 1, 1f, "");
+		child = new Token (Type.Science, "Abacus", Morality.Neutral, nEffect, 40, 10, 10, 1f, "");
+		tokens.Add (child.Name, child);
+		child.Unlocked = true;
+
+		nEffect = ScriptableObject.CreateInstance<BasicScienceIncreaserEffect>();
+		nEffect.setData (new float[]{1f});
+		child = new Token (Type.Science, "Archeology", Morality.Neutral, nEffect, 40, 10, 11, 1f, "");
 		tokens.Add (child.Name, child);
 		child.Unlocked = true;
 

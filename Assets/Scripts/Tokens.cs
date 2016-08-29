@@ -133,10 +133,10 @@ public class Token {
 	public bool ShouldBeLocked(){
 		foreach (Token child in children) {
 			if(Progress < UpPoints){
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public void CheckForUnlock(){

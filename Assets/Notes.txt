@@ -30,15 +30,10 @@ Decay?
 
 Things I need to do.
 After these do this.
-  - Balance Rarity
+  - Balance Rarity. Balance. Just Balance.
+  - Finish Models
   - Hide Tech Box if no tech is left;
   - Input Output Data
-  - Icon Bug
   - Tutorial
-  - Shaders
   - Sort out behind bug
-  - Make Icons
-    - Blank
-    - Increase Population
-  - Sound?
-  
+  - Sound? Music is Done

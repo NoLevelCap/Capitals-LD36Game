@@ -49,7 +49,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			}
 			int i = 0;
 			foreach (Transform child in transform.FindChild("Floaters")) {
-				Debug.Log ("ABC");
 				child.GetComponent<Text> ().text = activeeffect.getOutput()[i];
 				i++;
 			}
@@ -94,8 +93,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		Transform IconPanel = transform.Find ("Info").GetChild (0);
 		foreach (int icon in types) {
 			GameObject gm = Instantiate<GameObject> (GameManager.instance.Icon);
-			gm.transform.SetParent (IconPanel);
-			gm.transform.GetChild (0).GetComponent<Image> ().sprite = GameManager.instance.TokenIcons [icon];
+			gm.transform.SetParent (IconPanel, false);
+			gm.transform.GetChild(0).GetComponent<Image> ().sprite = GameManager.instance.EffectIcons [icon];
 		}
 
 		if (token.Effect.getCost () > 0) {

@@ -53,13 +53,13 @@ public class PopulationIncreaseEffect : AEffect
 
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{0, 1};
+		return new int[]{6, 10};
 	}
 
 
 	public override string[] getOutput ()
 	{
-		return new string[]{"Example", "ABCUS"};
+		return new string[]{"Population Around Increased", "ABCUS"};
 	}
 
 
@@ -149,7 +149,7 @@ public class LocalTaxesIncreaseEffect : AEffect
 
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{1};
+		return new int[]{8, 9, 10};
 	}
 
 	public override int getCost ()
@@ -201,7 +201,7 @@ public class AddCardsEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{2};
+		return new int[]{2, 4};
 	}
 	public override int getCost ()
 	{
@@ -254,7 +254,7 @@ public class IncreasePopEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{};
+		return new int[]{7, 4};
 	}
 	public override int getCost ()
 	{
@@ -307,7 +307,7 @@ public class IncreaseMoney:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{1};
+		return new int[]{1, 4};
 	}
 	public override int getCost ()
 	{
@@ -355,7 +355,7 @@ public class ClearTilesEffect:AEffect
 	}
 	public override int[] GetIconTypes ()
 	{
-		return new int[]{5};
+		return new int[]{5, 1};
 	}
 	public override int getCost ()
 	{
