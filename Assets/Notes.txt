@@ -32,8 +32,7 @@ Things I need to do.
 After these do this.
   - Balance Rarity. Balance. Just Balance.
   - Finish Models
-  - Hide Tech Box if no tech is left;
+  - Unlocked list?
   - Input Output Data
-  - Tutorial
   - Sort out behind bug
   - Sound? Music is Done

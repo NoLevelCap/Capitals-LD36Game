@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour {
 		foreach (Transform item in TechTree.transform) {
 			Destroy (item.gameObject);
 		}
+		int a = 0;
 		foreach (Token tech in UnlockedTokens) {
 			foreach (Token child in tech.children) {
 				if(!child.Unlocked){
@@ -159,8 +160,13 @@ public class GameManager : MonoBehaviour {
 						gj.transform.GetChild (5).GetChild (0).GetComponent<Text> ().text = "Unlocked Tommorow";
 						gj.transform.GetChild (5).GetChild (1).GetChild (0).GetComponent<Text> ().text = "Unlocked Tommorow";
 					}
+					a++;
 				}
 			}
+		}
+
+		if (a == 0) {
+			TechTree.transform.parent.parent.gameObject.SetActive (false);
 		}
 	}
 
