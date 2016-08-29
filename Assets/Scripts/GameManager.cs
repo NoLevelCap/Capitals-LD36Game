@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject TechData, TechTree;
 	public MoneyManager Man;
+	public OutputBoard OB;
 
 	public GameObject Icon, Floater;
 	public Text Alert;
@@ -186,7 +187,11 @@ public class GameManager : MonoBehaviour {
 		UnlockedTokens.Clear ();
 		foreach (Token token in tokens.Values) {
 			foreach (Token child in token.children) {
-				child.CheckForUnlock ();
+				if(!child.Unlocked){
+					if (child.CheckForUnlock ()) {
+						OB.AddtoLog (child.Name + " Unlocked");
+					}
+				}
 			}
 		}
 		foreach (Token token in tokens.Values) {

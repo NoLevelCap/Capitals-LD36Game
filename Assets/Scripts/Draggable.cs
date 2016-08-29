@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(RectTransform))]
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -47,11 +48,18 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			} else {
 				Show ();
 			}
-			int i = 0;
-			foreach (Transform child in transform.FindChild("Floaters")) {
-				child.GetComponent<Text> ().text = activeeffect.getOutput()[i];
-				i++;
+			int top = activeeffect.getOutput ().Length;
+			foreach (Transform item in transform.FindChild ("Floaters")) {
+				Destroy (item.gameObject);
 			}
+			for (int i = 0; i < top; i++) {
+				GameObject text = Instantiate <GameObject> (GameManager.instance.Floater);
+				text.transform.SetParent (transform.FindChild ("Floaters"), false);
+				text.name = "Floater";
+				text.GetComponent<Text> ().text = activeeffect.getOutput()[i];
+			}
+
+
 		}
 	}
 
@@ -83,7 +91,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			startPos = rect.position;
 			rect.localScale = new Vector3 (0.35f, 0.35f, 1f);
 			cg.alpha = 0.25f;
-			transform.parent = board;
+			transform.SetParent(board, false);
 			GameManager.TokenSelection = gameObject;
 		}
 	}
@@ -128,9 +136,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 						UpdateDuration ();
 						Dragged = true;
 
-						Debug.Log (GameManager.BlockSelection.ActiveEffect.getOutput ().Length);
-						transform.FindChild ("Floaters").localPosition = new Vector3 (0, 150, 0);
-						foreach (string item in GameManager.BlockSelection.ActiveEffect.getOutput()) {
+						transform.FindChild ("Floaters").localPosition = new Vector3 (0, 50, 0);
+						for(int i=0; i<5; i++) {
 							GameObject text = Instantiate <GameObject> (GameManager.instance.Floater);
 							text.transform.SetParent (transform.FindChild ("Floaters"), false);
 							text.name = "Floater";

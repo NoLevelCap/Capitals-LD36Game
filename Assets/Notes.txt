@@ -32,7 +32,8 @@ Things I need to do.
 After these do this.
   - Balance Rarity. Balance. Just Balance.
   - Finish Models
-  - Unlocked list?
-  - Input Output Data
-  - Sort out behind bug
   - Sound? Music is Done
+
+Post Release Fixes and Things to do:
+  - Get rid of tech which has been unlocked from list.
+  - Sort out behind bug

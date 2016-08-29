@@ -15,7 +15,7 @@ public enum Type
 
 public abstract class AEffect : ScriptableObject {
 
-	private bool firstTrigger;
+	public bool firstTrigger;
 	public Token parent;
 
 	public AEffect(){
@@ -139,12 +139,14 @@ public class Token {
 		return false;
 	}
 
-	public void CheckForUnlock(){
+	public bool CheckForUnlock(){
 		if (Progress >= UpPoints) {
 			parent.Unlocked = ShouldBeLocked ();
 			Unlocked = true;
+			return true;
 		} else {
 			Unlocked = false;
+			return false;
 		}
 	}
 		

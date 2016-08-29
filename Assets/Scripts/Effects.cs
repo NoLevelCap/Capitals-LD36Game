@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PopulationIncreaseEffect : AEffect
 {
@@ -7,12 +8,13 @@ public class PopulationIncreaseEffect : AEffect
 	private int cost;
 	private float mod, bigmod;
 	private float[] data;
+	private List<string> output;
 
 	CityGenerator[] blocksAround;
 
 	public override void PreEffect (CityGenerator block)
 	{
-
+		output = new List<string> ();
 		int x = block.mx;
 		int y = block.my;
 		blocksAround = new CityGenerator[4];
@@ -37,12 +39,18 @@ public class PopulationIncreaseEffect : AEffect
 	}
 	public override void MainEffect (CityGenerator block)
 	{
+		if(!firstTrigger){
+			output.Clear ();
+		}
 		block.CBD.IncreasePopulation (bigmod);
+		output.Add ("<color=green>"+"Pop +" + (bigmod*100f)+"%"+"</color>");
 		foreach (CityGenerator blocks in blocksAround) {
 			if(blocks != null){
 				blocks.CBD.IncreasePopulation (mod);
 			}
 		}
+
+		output.Add ("<color=green>"+blocksAround.Length + " Pops +" + (mod*100f)+"%"+"</color>");
 	}
 
 	public override void OnDestoy (CityGenerator block)
@@ -59,7 +67,7 @@ public class PopulationIncreaseEffect : AEffect
 
 	public override string[] getOutput ()
 	{
-		return new string[]{"Population Around Increased", "ABCUS"};
+		return output.ToArray();
 	}
 
 
@@ -94,10 +102,11 @@ public class LocalTaxesIncreaseEffect : AEffect
 	private float[] data;
 
 	float mod, bigmod, tax;
+	private List<string> output;
 
 	public override void PreEffect (CityGenerator block)
 	{
-
+		output = new List<string> ();
 		int x = block.mx;
 		int y = block.my;
 		blocksAround = new CityGenerator[4];
@@ -124,18 +133,26 @@ public class LocalTaxesIncreaseEffect : AEffect
 			}
 		}
 
+		output.Add ("<color=green>"+"Taxes +" + (tax*2f*100f)+"%"+"</color>");
+		output.Add ("<color=green>"+blocksAround.Length + " Taxes -" + (tax*100f)+"%"+"</color>");
+
 		MainEffect (block);
 
 	}
 	public override void MainEffect (CityGenerator block)
 	{
-		block.CBD.IncreasePopulation (-bigmod);
+		if(!firstTrigger){
+			output.Clear ();
+		}
 
+		block.CBD.IncreasePopulation (-bigmod);
+		output.Add ("<color=red>"+"Pop -" + (bigmod*100f)+"%"+"</color>");
 		foreach (CityGenerator blocks in blocksAround) {
 			if(blocks != null){
 				blocks.CBD.IncreasePopulation (-mod);
 			}
 		}
+		output.Add ("<color=red>"+blocksAround.Length + " Pops -" + (mod*100f)+"%"+"</color>");
 	}
 
 	#region implemented abstract members of AEffect
@@ -175,7 +192,7 @@ public class LocalTaxesIncreaseEffect : AEffect
 	}
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
@@ -185,10 +202,12 @@ public class AddCardsEffect:AEffect
 
 	private float[] data;
 	private int cost, amount;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
+		output = new List<string> ();
 		GameManager.instance.FillHand (amount);
 	}
 	public override void MainEffect (CityGenerator block)
@@ -225,7 +244,7 @@ public class AddCardsEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
@@ -236,17 +255,24 @@ public class IncreasePopEffect:AEffect
 	private float[] data;
 	private int cost, radi;
 	private float amount;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
-		if(block.CBD.Pop < amount){
-			block.CBD.SetPopData(amount);
+
+		output = new List<string> ();
+		if (block.CBD.Pop < amount) {
+			block.CBD.SetPopData (amount);
+			output.Add ("<color=green>"+"Pop set to " + (amount));
+		} else {
+			output.Add ("<color=orange>"+"Pop already at " + amount+"</color>");
 		}
+
 	}
 	public override void MainEffect (CityGenerator block)
 	{
-
+		output.Clear ();
 	}
 	public override void OnDestoy (CityGenerator block)
 	{
@@ -279,7 +305,7 @@ public class IncreasePopEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
@@ -291,15 +317,19 @@ public class IncreaseMoney:AEffect
 
 	private float[] data;
 	private int  amount;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
+		output = new List<string> ();
 		GameManager.instance.ChargeACost ("Illicit Funding", -amount);
+		output.Add ("<color=green>"+"Money +£" + (amount)+"</color>");
+
 	}
 	public override void MainEffect (CityGenerator block)
 	{
-
+		output.Clear ();
 	}
 	public override void OnDestoy (CityGenerator block)
 	{
@@ -330,7 +360,7 @@ public class IncreaseMoney:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
@@ -340,10 +370,12 @@ public class ClearTilesEffect:AEffect
 
 	private float[] data;
 	private int cost, radi;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
+		output = new List<string> ();
 	}
 	public override void MainEffect (CityGenerator block)
 	{
@@ -383,7 +415,7 @@ public class ClearTilesEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
@@ -393,15 +425,21 @@ public class BasicScienceIncreaserEffect:AEffect
 
 	private float[] data;
 	private int amount;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
-		parent.IncreaseChildTech (amount);
+		output = new List<string> ();
+		MainEffect (block);
 	}
 	public override void MainEffect (CityGenerator block)
 	{
+		if(!firstTrigger){
+			output.Clear ();
+		}
 		parent.IncreaseChildTech (amount);
+		output.Add ("<color=cyan>"+"Science +" + (amount)+"</color>");
 	}
 	public override void OnDestoy (CityGenerator block)
 	{
@@ -432,7 +470,7 @@ public class BasicScienceIncreaserEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{"EXAMPLE"};
+		return output.ToArray();
 	}
 
 }
@@ -442,15 +480,18 @@ public class BasicPrefaceEffect:AEffect
 
 	private float[] data;
 	private int cost, amount;
+	private List<string> output;
 
 	#region implemented abstract members of AEffect
 	public override void PreEffect (CityGenerator block)
 	{
-
+		output = new List<string> ();
 	}
 	public override void MainEffect (CityGenerator block)
 	{
-
+		if(!firstTrigger){
+			output.Clear ();
+		}
 	}
 	public override void OnDestoy (CityGenerator block)
 	{
@@ -482,7 +523,7 @@ public class BasicPrefaceEffect:AEffect
 	#endregion
 	public override string[] getOutput ()
 	{
-		return new string[]{};
+		return output.ToArray();
 	}
 
 }
